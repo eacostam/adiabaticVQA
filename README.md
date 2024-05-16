@@ -1,6 +1,6 @@
 ERNESTO ACOSTA MARTIN
 
-Subject:  Variational Circuit Training through Adiabatic Quantum Computing 
+Subject:  Adiabatic Training for Variational Quantum Algorithms
  
 Universidad de Granada
 Spain
