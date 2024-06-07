@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 """
 # Import Libraries
 import numpy as np
-from qiskit.algorithms.optimizers import SPSA
+from qiskit_algorithms.optimizers import SPSA
 import matplotlib.pyplot as plt
 import time
 
