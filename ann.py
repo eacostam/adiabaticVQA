@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 """
@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import time
 from config import LOG_FILE, LOG_DIR, QRB_REP
 from helpers import qcprint
+import numpy as np
 
 class ANN():
     train_data = []
@@ -22,10 +23,10 @@ class ANN():
     model = Sequential()
     
     def __init__(self, train_data, train_labels, test_data, test_labels):
-        self.train_data = train_data
-        self.train_labels = train_labels
-        self.test_data = test_data
-        self.test_labels = test_labels
+        self.train_data = np.array(train_data)
+        self.train_labels = np.array(train_labels)
+        self.test_data = np.array(test_data)
+        self.test_labels = np.array(test_labels)
     
         # Build the RNN model
         self.model = Sequential([
