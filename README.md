@@ -9,13 +9,14 @@ Required libraries installation:
 - !pip install qiskit
 - !pip install qiskit_machine_learning
 - !pip install qiskit[visualization]
+- !pip install qiskit-algorithms
 - !pip install pylatexenc
 - !pip install qiskit-symb
 - !pip install dwave-system
 - !pip install tensorflow
 - !pip install dimod
 - !pip install qiskit-ibm-runtime
-- !pip install qiskit-ibmq-provider
+- !qiskit-ibm-provider
 
 
 In order to execute the program, invoke main() method on main.py module
