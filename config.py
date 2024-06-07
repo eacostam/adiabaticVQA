@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 """
@@ -28,18 +28,16 @@ ANGLE_SHIFT = 0.001 #Small shift to apply on further repetitions
 VQC_RANDOM_INIT = False
 DISCRETE_EXT_PARTS = 7 #7 takes very long time and memory in simulation to finish
 QISKIT_REAL = False # True to run on physical hardware, False for simulation
-ADIABATIC_REAL = True # True to run on physical hardware, False for simulation
+ADIABATIC_REAL = False # True to run on physical hardware, False for simulation
 
 QISKIT_HUB = 'ibm-q'
 QISKIT_GROUP = 'open'
 QISKIT_PROJECT = 'main'
 DWAVE_TIMELIMIT = 60
 
-
-QISKIT_TOKEN = 'toktok'  # Put your DWave token
-QISKIT_BACKEND = 'ibm_nairobi' #Put the backend to use
-DWAVE_TOKEN = 'toktok'  #Put your IBM Quantum token
-
+QISKIT_TOKEN = 'toktok'  # Put your IBM Quantum token
+QISKIT_BACKEND = 'ibm_brisbane'#ibm_nairobi' #Put the backend to use
+DWAVE_TOKEN = 'toktok'  #Put your DWave token
 
 
 if not os.path.exists(LOG_DIR):
