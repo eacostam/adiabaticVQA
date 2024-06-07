@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 """
@@ -115,7 +115,12 @@ class QRNN_optimizer_adiabatic():
             start_time = time.time()
             computation = solver.sample_cqm(self.blp, label="experiment_" + str(self.parts) + "_parts", time_limit=DWAVE_TIMELIMIT)
             end_time = time.time()
+            sampleset = computation.sampleset
+            qcprint("sampleset:")
+            qcprint(sampleset)
             solutions = computation.samples
+            qcprint ("solutions :")
+            qcprint(solutions)
 
             if len(solutions) > 0:
                 optimal = solutions[0]
@@ -134,7 +139,6 @@ class QRNN_optimizer_adiabatic():
                 optimal = feasible_sols.samples()[0]
             else:
                 qcprint("No feasible solution found")
-            
             
         qcprint("Training Adiabatically took %s sec" % (end_time - start_time))
         qcprint("Explored " + str(len(solutions)) + " options in total")
