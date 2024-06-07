@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 """
 # Import Libraries
 import numpy as np
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute
+from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister#Q10 remove, execute
 from qiskit.circuit import ParameterVector
-from qiskit import BasicAer 
+from qiskit.quantum_info import Statevector
+from qiskit.providers.basic_provider import BasicProvider
 from qiskit_symb import Operator as SymbOperator
-from qiskit import transpile, IBMQ
+from qiskit import transpile
+from qiskit_ibm_provider import IBMProvider
 
 import time
 
@@ -120,7 +122,6 @@ class QRNN():
         self.cbits = ClassicalRegister(measured_qubits, "c")
         self.circuit = QuantumCircuit(self.qubits, self.cbits)
         
-        #QRB = []
         ind = 0
         for fm in range(qrb_rep):
           qrb = QuantumCircuit(self.qubits, self.cbits, name=("QRB"+str(ind)))
@@ -186,21 +187,27 @@ def circuits_execution(data, ansatz_params, qrnn, shots, realhw=False):
         circ_ind += 1
     
     if not realhw: # run on simulator
-        backend = BasicAer.get_backend('qasm_simulator')
+        backend = BasicProvider().get_backend("basic_simulator")
+        
         
         start_time = time.time()
-        results = execute(circuits, backend, shots = shots).result()
+        new_circuits = transpile(circuits, backend)
+        results = backend.run(new_circuits,shots = shots).result()
+        
         qcprint("Execute the circuits on " + str(len(data)) + " registers, and " + str(shots) + " shots, took %s sec" % (time.time() - start_time))
     else: # run on real hardware
-        IBMQ.save_account(QISKIT_TOKEN, overwrite=True)
-        provider = IBMQ.load_account()
-        provider = IBMQ.get_provider(hub=QISKIT_HUB, group=QISKIT_GROUP, project=QISKIT_PROJECT)
+        IBMProvider.save_account(token=QISKIT_TOKEN, overwrite=True)
+        provider = IBMProvider()
+        qiskit_instance = str(QISKIT_HUB) + "/" + str(QISKIT_GROUP) + "/" + str(QISKIT_PROJECT)
+        print("qiskit instance: " + qiskit_instance)
+        provider = IBMProvider(instance=qiskit_instance)
+        
         backend = provider.get_backend(QISKIT_BACKEND)
         transpiled = transpile(circuits, backend=backend)
-        job = backend.run(transpiled, job_name="experiment_" + str(qrnn.qrb_rep) + "_qrbreps")
+        job = backend.run(transpiled)
 
         results = job.result()
-        counts = results.get_counts(circuits)
+        counts = results.get_counts()
         print("Result: " + str(counts))
     
     classification = [label_execution(results.get_counts(c)) for c in circuits]
@@ -236,9 +243,8 @@ def get_input_StateVector(inputval, in_qubits):
   
   myCircuit = myCircuit.assign_parameters(myparameters)
 
-  back = BasicAer.get_backend('statevector_simulator')
-  result = execute(myCircuit, back, shots = 100).result()
-  state_vector = result.get_statevector(myCircuit, decimals=2)
+  myCircuit.remove_final_measurements()
+  state_vector = Statevector(myCircuit)
 
   return state_vector
 
@@ -251,8 +257,7 @@ def get_output_StateVector(output):
   if (output==1):
     myCircuit.x(3)
 
-  back = BasicAer.get_backend('statevector_simulator')
-  result = execute(myCircuit, back, shots = 100).result()
-  state_vector = result.get_statevector(myCircuit, decimals=2)
-
+  myCircuit.remove_final_measurements()
+  state_vector = Statevector(myCircuit)
+  
   return state_vector
