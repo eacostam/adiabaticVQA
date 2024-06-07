@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 02 14:22:45 2023
+Created on May 2024
  
 @author: eacosta
 
@@ -8,6 +8,9 @@ Required libraries
 !pip install qiskit
 !pip install qiskit_machine_learning
 !pip install qiskit[visualization]
+!pip install qiskit-algorithms
+!pip install qiskit-ibm-runtime
+!pip install qiskit-ibm-provider
 !pip install pylatexenc
 !pip install qiskit-symb
 !pip install dwave-system
@@ -50,7 +53,7 @@ def main(run_qrnn_classical, run_qrnn_adiabatic, run_ann):
         
         # Test
         accuracy_c, predictions = qrnn_validation(test_data, test_labels, np.abs(opt_var_c), qrnn, SHOTS, QISKIT_REAL)
-        print("QRNN accuracy classical training: " + str(accuracy_c))
+        print("QRNN classical training accuracy: " + str(accuracy_c))
     
     # 4. Train QRNN - Adiabatic
     if run_qrnn_adiabatic==True or run_qrnn_adiabatic=="True":
@@ -62,7 +65,7 @@ def main(run_qrnn_classical, run_qrnn_adiabatic, run_ann):
         
         # Test 
         accuracy_a, predictions = qrnn_validation(test_data, test_labels, opt_var_a, qrnn, SHOTS, QISKIT_REAL)
-        print("QRNN accuracy adiabatical training: " + str(accuracy_a))
+        print("QRNN adiabatical training accuracy: " + str(accuracy_a))
  
     # 5 Classical Artificial Neural Network
     if run_ann==True or run_ann=="True":
@@ -74,4 +77,4 @@ def main(run_qrnn_classical, run_qrnn_adiabatic, run_ann):
 if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2], sys.argv[3])
 
-#main(False, True, False)
+#main(True, False, False)
