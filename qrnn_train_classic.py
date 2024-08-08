@@ -35,7 +35,7 @@ class QRNN_optimizer_classic():
         return cost
     
     def train(self, init_ansatz_params):
-        qcprint("\nTRAINING QRNN CLASSICAL approach for: " + str(MAX_ITER) + " iterations")
+        qcprint("\nTRAINING QRNN CLASSICAL approach for: " + str(MAX_ITER*3) + " iterations") #Pending to review why classical training takes 3x MAX_ITER
         start_time = time.time()
         log = OptimizerLog()
         spsa = SPSA(maxiter=MAX_ITER, callback=log.update)
