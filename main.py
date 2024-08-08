@@ -26,7 +26,7 @@ from config import LOAD_DATA_FROM, MAX_ROWS, IN_QUBITS, CIRCUIT_SIZE, MAX_ITER
 from config import QRB_REP,VQC_RANDOM_INIT, SHOTS
 from config import DISCRETE_EXT_PARTS, QISKIT_REAL
 from datamgt import data_load, data_prep
-from qrnn import QRNN, get_input_StateVector, get_output_StateVector
+from qrnn import QRNN, get_input_StateVector, get_output_StateVector#, Ansatz
 from qrnn import qrnn_validation
 from qrnn_train_classic import QRNN_optimizer_classic#, OptimizerLog
 from qrnn_train_adiabatic import QRNN_optimizer_adiabatic
@@ -57,6 +57,10 @@ def main(run_qrnn_classical, run_qrnn_adiabatic, run_ann):
     
     # 4. Train QRNN - Adiabatic
     if run_qrnn_adiabatic==True or run_qrnn_adiabatic=="True":
+        #ans = Ansatz(4, 'θ')
+        #op = ans.get_operator()
+        #print(op)
+
         qrnn_optimizer_adiabatic = QRNN_optimizer_adiabatic(DISCRETE_EXT_PARTS, 
                                                             [np.real(get_input_StateVector(i, IN_QUBITS)) for i in train_data],
                                                             [np.real(get_output_StateVector(j)) for j in train_labels] )
@@ -70,11 +74,11 @@ def main(run_qrnn_classical, run_qrnn_adiabatic, run_ann):
     # 5 Classical Artificial Neural Network
     if run_ann==True or run_ann=="True":
         ann = ANN(train_data, train_labels, test_data, test_labels)
-        ann.train(MAX_ITER)
+        ann.train(MAX_ITER*3) #Pending to review why classical training takes 3x MAX_ITER
         ann_accuracy = ann.validate()
         print("ANN accuracy: " + str(ann_accuracy))  
 
 if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2], sys.argv[3])
 
-#main(True, False, False)
+#main(True, True, True)
